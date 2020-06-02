@@ -16,12 +16,19 @@ configuration NodeC{
 implementation {
     components MainC;
 	components new TimerMilliC() as myTimerC;
+    components new TimerMilliC() as lspTimer;
     components Node;
+    components RandomC as Random;
     components new AMReceiverC(AM_PACK) as GeneralReceive;
+   // components new HashmapC(uint16_t, 50) as NeighborMap;
+
     Node -> MainC.Boot;
 	Node.periodicTimer -> myTimerC;
-    Node.Receive -> GeneralReceive; 
 
+    Node.lspTimer -> lspTimer;
+    //Node.NeighborMap -> NeighborMap;
+    Node.Receive -> GeneralReceive; 
+    Node.Random -> Random;
     components ActiveMessageC;
     Node.AMControl -> ActiveMessageC;
 
@@ -30,7 +37,8 @@ implementation {
 
     components CommandHandlerC;
     Node.CommandHandler -> CommandHandlerC;
-	
 
+    //components FloodingC; 
+    //Node.FloodSender -> FloodingC.FloodSender;
 	
 }
